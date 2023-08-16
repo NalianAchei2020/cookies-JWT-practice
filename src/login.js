@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import { TextField, Stack, Button } from '@mui/material';
 import axios from 'axios';
 import { userContext } from './context/store';
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { dispatch } = useContext(userContext);
@@ -15,7 +14,10 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = form;
-  const hanleLogin = async (data) => {
+  const [token, setToken] = useState('');
+
+  const hanleLogin = async (data, e) => {
+    e.preventDefault();
     try {
       const response = await axios('http://localhost:5000/api/v1/auth/signin', {
         method: 'POST',
@@ -26,13 +28,15 @@ const Login = () => {
         withCredentials: true,
       });
       const resdata = response.data;
+      const admin = resdata.isAdmin;
       dispatch({ type: 'LOGIN', payload: resdata });
-
       console.log(resdata);
+      console.log(admin);
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <div className="login">
       <form onSubmit={handleSubmit(hanleLogin)} noValidate>
@@ -85,6 +89,7 @@ const Login = () => {
           <br />
         </Stack>
       </form>
+      <p>Token:{token}</p>
     </div>
   );
 };
