@@ -15,6 +15,7 @@ const Users = () => {
         headers: {
           ContentType: 'application/json',
         },
+        withCredentials: true,
       });
       const data = response.data;
       setUsers(data);

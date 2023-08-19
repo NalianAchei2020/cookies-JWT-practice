@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import { TextField, Stack, Button } from '@mui/material';
@@ -14,7 +14,6 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = form;
-  const [token, setToken] = useState('');
 
   const hanleLogin = async (data, e) => {
     e.preventDefault();
@@ -32,6 +31,9 @@ const Login = () => {
       dispatch({ type: 'LOGIN', payload: resdata });
       console.log(resdata);
       console.log(admin);
+      if (admin) {
+        window.location.href = '/users';
+      }
     } catch (err) {
       console.log(err);
     }
@@ -89,7 +91,6 @@ const Login = () => {
           <br />
         </Stack>
       </form>
-      <p>Token:{token}</p>
     </div>
   );
 };
